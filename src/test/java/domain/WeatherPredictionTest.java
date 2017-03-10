@@ -37,7 +37,7 @@ public class WeatherPredictionTest {
 	@Test
 	public void testMinTempCalculation() {
 		server.expect(ExpectedCount.once(), requestTo("/testWeatherApp/1")).andExpect(method(GET))
-				.andRespond(withSuccess(stringFromFile(1), APPLICATION_JSON));
+				.andRespond(withSuccess(stringFromTestFile(1), APPLICATION_JSON));
 
 		weatherPrediction = restTemplate.getForObject("/testWeatherApp/{id}", WeatherPrediction.class, 1);
 
@@ -53,7 +53,7 @@ public class WeatherPredictionTest {
 		assertThat(resultatCalcMinMaxSecondDay.getMinTemp(), is(equalTo(Double.valueOf("274.326"))));
 	}
 
-	private String stringFromFile(Integer numeroDeTest) {
+	private String stringFromTestFile(Integer numeroDeTest) {
 
 		String content = "";
 		try {
