@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 import com.weatherapp.domain.WeatherPrediction;
-import com.weatherapp.utils.exceptions.CityNotFoundException;
 
 @RestController
 public class HomeController {
@@ -33,11 +32,9 @@ public class HomeController {
 	@CrossOrigin(origins = "http://localhost:8080")
 	@RequestMapping(value = "/byCityAndCountry")
 	public WeatherPrediction listPredictionParNomDeVilleEtDePays(@RequestParam String city,
-			@RequestParam String country) throws CityNotFoundException {
+			@RequestParam String country) {
 		String arguments = "&q=" + city + "," + country;
 		String request = urlWeatherAPI + keyWeatherAPI + arguments;
-
-		System.out.println(request);
 
 		RestTemplate restTemplate = new RestTemplate();
 		WeatherPrediction weather = restTemplate.getForObject(request, WeatherPrediction.class);
@@ -57,8 +54,7 @@ public class HomeController {
 	 */
 	@CrossOrigin(origins = "http://localhost:8080")
 	@RequestMapping(value = "/byCoordinates")
-	public WeatherPrediction listPredictionParCoordonnees(@RequestParam String lat, @RequestParam String lng)
-			throws CityNotFoundException {
+	public WeatherPrediction listPredictionParCoordonnees(@RequestParam String lat, @RequestParam String lng) {
 
 		// Appel de l'API distante pour recuperer les informations
 		String arguments = "&lat=" + lat + "&lon=" + lng;
