@@ -50,8 +50,7 @@ public class WeatherPrediction {
 
 			String dateDuJour = dateDuJourBuilder.toString();
 			if (!map.containsKey(dateDuJour)) {
-				map.put(dateDuJour.toString(),
-						new Double[] { tempMax, tempMin });
+				map.put(dateDuJour.toString(), new Double[] { tempMax, tempMin });
 			} else {
 				Double tempMaxInit = map.get(dateDuJour)[0];
 				Double tempMinInit = map.get(dateDuJour)[1];
@@ -73,8 +72,7 @@ public class WeatherPrediction {
 		int i = 0;
 		temperatureMinMax = new TempMinMax[map.size()];
 		for (Map.Entry<String, Double[]> entry : finalMap.entrySet()) {
-			temperatureMinMax[i] = new TempMinMax(entry.getKey(),
-					entry.getValue()[0], entry.getValue()[1]);
+			temperatureMinMax[i] = new TempMinMax(entry.getKey(), entry.getValue()[0], entry.getValue()[1]);
 			++i;
 		}
 
