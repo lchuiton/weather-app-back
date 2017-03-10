@@ -4,6 +4,7 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.TimeZone;
 
 import com.weatherapp.domain.weather.City;
 import com.weatherapp.domain.weather.List;
@@ -23,7 +24,7 @@ public class WeatherPrediction {
 	}
 
 	public void calcMinMax() {
-		Calendar cal = Calendar.getInstance();
+		Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
 		Map<String, Double[]> map = new HashMap<>();
 		for (List listDeData : list) {
 			cal.setTimeInMillis(listDeData.getDt() * 1000);
