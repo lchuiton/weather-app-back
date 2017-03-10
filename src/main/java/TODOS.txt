@@ -1,0 +1,1 @@
+1 - Recuperer la timezone en fonction des coordonnees GPS
