@@ -1,0 +1,10 @@
+server:
+  port: 9000
+  
+api:
+  weather:
+    url: http://api.openweathermap.org/data/2.5/forecast?
+    key: appid=38b0ef233cc7a4f47339572ec0f2851d
+  googlemaps:
+    url: https://maps.googleapis.com/maps/api/geocode/json?
+    key: key=AIzaSyD8pXSesxLJkgKYXpaFasX7atSAGMHg4nA
