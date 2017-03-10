@@ -68,16 +68,25 @@ public class HomeController {
 		WeatherPrediction weather = restTemplate.getForObject(request, WeatherPrediction.class);
 
 		if (StringUtils.isEmpty(weather.getCity().getName())) {
-			DecimalFormat df = new DecimalFormat("####.##");
-			df.setRoundingMode(RoundingMode.CEILING);
-			weather.getCity()
-					.setName("lat=" + df.format(Double.valueOf(lat)) + "\nlon=" + df.format(Double.valueOf(lng)));
-			weather.getCity().setCountry("Unknown");
+			String coordinate = formatCoordinate(lat, lng);
+			weather.getCity().setName(coordinate);
+
+			weather.getCity().setCountry("No country");
 		}
 
 		weather.calcMinMax();
 
 		return weather;
+	}
+
+	private String formatCoordinate(String lat, String lng) {
+		DecimalFormat df = new DecimalFormat("####.##");
+		df.setRoundingMode(RoundingMode.CEILING);
+		Double latitude = Double.valueOf(lat);
+		Double longitude = Double.valueOf(lng);
+		String displayLat = latitude < 0 ? df.format(Math.abs(latitude)) + "ºS" : df.format(latitude) + "ºN";
+		String displayLon = longitude < 0 ? df.format(Math.abs(longitude)) + "ºO" : df.format(longitude) + "ºE";
+		return displayLat + ", " + displayLon;
 	}
 
 }
