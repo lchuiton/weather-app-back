@@ -3,7 +3,6 @@ package domain;
 import static java.nio.file.Files.readAllBytes;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.is;
 import static org.springframework.http.HttpMethod.GET;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.method;
@@ -19,18 +18,22 @@ import org.springframework.test.web.client.ExpectedCount;
 import org.springframework.test.web.client.MockRestServiceServer;
 import org.springframework.web.client.RestTemplate;
 
-import com.weatherapp.domain.WeatherPrediction;
-import com.weatherapp.domain.weather.TempMinMax;
+import com.weatherapp.helper.TemperatureHelper;
+import com.weatherapp.model.TempMinMax;
+import com.weatherapp.model.WeatherPrediction;
 
 public class WeatherPredictionTest {
 
 	private WeatherPrediction weatherPrediction;
 	private RestTemplate restTemplate;
+	private TemperatureHelper temperatureHelper;
+
 	private MockRestServiceServer server;
 
 	@Before
 	public void setup() {
 		restTemplate = new RestTemplate();
+		temperatureHelper = new TemperatureHelper();
 		server = MockRestServiceServer.bindTo(restTemplate).build();
 	}
 
@@ -41,7 +44,7 @@ public class WeatherPredictionTest {
 
 		weatherPrediction = restTemplate.getForObject("/testWeatherApp/{id}", WeatherPrediction.class, 1);
 
-		weatherPrediction.calcMinMax();
+		temperatureHelper.calcMinMax(weatherPrediction);
 		TempMinMax resultatCalcMinMaxFirstDay = weatherPrediction.getTemperatureMinMax()[0];
 		assertThat(resultatCalcMinMaxFirstDay.getDate(), equalTo("2017-03-10"));
 		assertThat(resultatCalcMinMaxFirstDay.getMaxTemp(), equalTo(Double.valueOf("279.489")));

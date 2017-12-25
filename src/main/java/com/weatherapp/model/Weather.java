@@ -1,4 +1,4 @@
-package com.weatherapp.domain.weather;
+package com.weatherapp.model;
 
 import lombok.Data;
 

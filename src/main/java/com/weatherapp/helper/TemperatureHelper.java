@@ -1,4 +1,4 @@
-package com.weatherapp.domain;
+package com.weatherapp.helper;
 
 import java.util.Calendar;
 import java.util.HashMap;
@@ -6,26 +6,18 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.TimeZone;
 
-import com.weatherapp.domain.weather.City;
-import com.weatherapp.domain.weather.List;
-import com.weatherapp.domain.weather.TempMinMax;
+import com.weatherapp.model.List;
+import com.weatherapp.model.TempMinMax;
+import com.weatherapp.model.WeatherPrediction;
 
-import lombok.Data;
+public class TemperatureHelper {
 
-@Data
-public class WeatherPrediction {
-
-	private City city;
-	private List[] list;
-
-	private TempMinMax[] temperatureMinMax;
-
-	public WeatherPrediction() {
-	}
-
-	public void calcMinMax() {
+	public void calcMinMax(WeatherPrediction weatherPrediction) {
 		Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
 		Map<String, Double[]> map = new HashMap<>();
+
+		List[] list = weatherPrediction.getList();
+
 		for (List listDeData : list) {
 			cal.setTimeInMillis(listDeData.getDt() * 1000);
 			StringBuilder dateDuJourBuilder = new StringBuilder();
@@ -71,12 +63,14 @@ public class WeatherPrediction {
 				.forEachOrdered(x -> finalMap.put(x.getKey(), x.getValue()));
 
 		int i = 0;
-		temperatureMinMax = new TempMinMax[map.size()];
+
+		TempMinMax[] temperatureMinMax = new TempMinMax[map.size()];
 		for (Map.Entry<String, Double[]> entry : finalMap.entrySet()) {
 			temperatureMinMax[i] = new TempMinMax(entry.getKey(), entry.getValue()[0], entry.getValue()[1]);
 			++i;
 		}
 
-	}
+		weatherPrediction.setTemperatureMinMax(temperatureMinMax);
 
+	}
 }
