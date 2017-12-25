@@ -9,7 +9,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration
 @WebAppConfiguration
-public class WeatherForecastApplicationTests {
+public class WeatherForecastApplicationTest {
 
 	@Test
 	public void contextLoads() {

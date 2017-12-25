@@ -43,14 +43,14 @@ public class WeatherPredictionTest {
 
 		weatherPrediction.calcMinMax();
 		TempMinMax resultatCalcMinMaxFirstDay = weatherPrediction.getTemperatureMinMax()[0];
-		assertThat(resultatCalcMinMaxFirstDay.getDate(), is(equalTo("2017-03-10")));
-		assertThat(resultatCalcMinMaxFirstDay.getMaxTemp(), is(equalTo(Double.valueOf("279.489"))));
-		assertThat(resultatCalcMinMaxFirstDay.getMinTemp(), is(equalTo(Double.valueOf("277.94"))));
+		assertThat(resultatCalcMinMaxFirstDay.getDate(), equalTo("2017-03-10"));
+		assertThat(resultatCalcMinMaxFirstDay.getMaxTemp(), equalTo(Double.valueOf("279.489")));
+		assertThat(resultatCalcMinMaxFirstDay.getMinTemp(), equalTo(Double.valueOf("277.94")));
 
 		TempMinMax resultatCalcMinMaxSecondDay = weatherPrediction.getTemperatureMinMax()[1];
-		assertThat(resultatCalcMinMaxSecondDay.getDate(), is(equalTo("2017-03-11")));
-		assertThat(resultatCalcMinMaxSecondDay.getMaxTemp(), is(equalTo(Double.valueOf("287.998"))));
-		assertThat(resultatCalcMinMaxSecondDay.getMinTemp(), is(equalTo(Double.valueOf("274.326"))));
+		assertThat(resultatCalcMinMaxSecondDay.getDate(), equalTo("2017-03-11"));
+		assertThat(resultatCalcMinMaxSecondDay.getMaxTemp(), equalTo(Double.valueOf("287.998")));
+		assertThat(resultatCalcMinMaxSecondDay.getMinTemp(), equalTo(Double.valueOf("274.326")));
 	}
 
 	private String stringFromTestFile(Integer numeroDeTest) {
