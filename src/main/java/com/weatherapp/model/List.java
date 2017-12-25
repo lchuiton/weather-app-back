@@ -1,8 +1,10 @@
 package com.weatherapp.model;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 public class List {
 
 	private Main main;

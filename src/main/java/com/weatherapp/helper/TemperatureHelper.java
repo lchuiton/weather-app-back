@@ -38,8 +38,8 @@ public class TemperatureHelper {
 			}
 			dateDuJourBuilder.append(jour);
 
-			Double tempMax = listDeData.getMain().getTemp_max();
-			Double tempMin = listDeData.getMain().getTemp_min();
+			Double tempMax = listDeData.getMain().getTempMax();
+			Double tempMin = listDeData.getMain().getTempMin();
 
 			String dateDuJour = dateDuJourBuilder.toString();
 			if (!map.containsKey(dateDuJour)) {
