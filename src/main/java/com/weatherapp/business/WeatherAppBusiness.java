@@ -30,9 +30,7 @@ public class WeatherAppBusiness {
 		String arguments = "&q=" + city + "," + country;
 		String request = urlWeatherAPI + keyWeatherAPI + arguments;
 
-		System.out.println("1");
 		WeatherPrediction weatherPrediction = weatherSubscriber.getPrediction(request);
-		System.out.println("2");
 
 		temperatureHelper.calcMinMax(weatherPrediction);
 

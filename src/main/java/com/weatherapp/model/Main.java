@@ -1,13 +1,19 @@
 package com.weatherapp.model;
 
-import lombok.Data;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-@Data
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 public class Main {
 
 	private double temp;
-	private double temp_min;
-	private double temp_max;
+	@JsonProperty("temp_min")
+	private double tempMin;
+	@JsonProperty("temp_max")
+	private double tempMax;
 	private double pressure;
 	private int humidity;
 

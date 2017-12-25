@@ -11,7 +11,7 @@ public class WeatherSubscriber {
 
 	@Autowired
 	private ApiWeatherWebService apiWeatherWebService;
-	// FIXME I'm sure it's not supposed to work like that ...
+	// FIXME I'm sure it's not suppose to work like that ...
 	private WeatherPrediction weatherPrediction;
 
 	public WeatherPrediction getPrediction(String request) {

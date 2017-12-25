@@ -1,12 +1,15 @@
 package com.weatherapp.model;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Getter
 public class WeatherPrediction {
 
 	private City city;
 	private List[] list;
+
+	@Setter
 	private TempMinMax[] temperatureMinMax;
 
 	public WeatherPrediction() {

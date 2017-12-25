@@ -1,8 +1,8 @@
 package com.weatherapp.model;
 
-import lombok.Data;
+import lombok.Getter;
 
-@Data
+@Getter
 public class TempMinMax {
 
 	private String date;
