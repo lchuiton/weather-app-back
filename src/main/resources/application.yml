@@ -3,5 +3,4 @@ server:
   
 api:
   weather:
-    url: http://api.openweathermap.org/data/2.5/forecast?
-    key: appid=38b0ef233cc7a4f47339572ec0f2851d
+    uri: http://api.openweathermap.org/data/2.5/forecast?appid=38b0ef233cc7a4f47339572ec0f2851d
