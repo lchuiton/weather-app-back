@@ -4,7 +4,12 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import com.weatherapp.model.WeatherPrediction;
 
@@ -16,27 +21,22 @@ public class ApiWeatherWebService {
 	RestTemplate restTemplate;
 
 	public WeatherPrediction callApiWeather(Map<String, String> uriVariables) {
-		String request = buildRequestUri(uriVariables);
 
-		return restTemplate.getForObject(request, WeatherPrediction.class);
-	}
+		HttpHeaders headers = new HttpHeaders();
+		headers.set("Accept", MediaType.APPLICATION_JSON_VALUE);
 
-	private String buildRequestUri(Map<String, String> uriVariables) {
-		StringBuilder stringBuilder = new StringBuilder();
-		stringBuilder.append(apiWeatherUri);
-
-		if (!uriVariables.isEmpty()) {
-			stringBuilder.append("&");
-		}
+		UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(apiWeatherUri);
 
 		for (String variableKey : uriVariables.keySet()) {
-			stringBuilder.append(variableKey);
-			stringBuilder.append("=");
-			stringBuilder.append(uriVariables.get(variableKey));
+			builder.queryParam(variableKey, uriVariables.get(variableKey));
 		}
 
-		return stringBuilder.toString();
+		HttpEntity<?> entity = new HttpEntity<>(headers);
 
+		HttpEntity<WeatherPrediction> response = restTemplate.exchange(builder.build().encode().toUri(), HttpMethod.GET,
+				entity, WeatherPrediction.class);
+
+		return response.getBody();
 	}
 
 }
