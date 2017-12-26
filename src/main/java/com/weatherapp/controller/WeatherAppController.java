@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.weatherapp.business.WeatherAppBusiness;
-import com.weatherapp.model.WeatherPrediction;
+import com.weatherapp.model.output.WeatherPredictionOutput;
 
 @RestController
 public class WeatherAppController {
@@ -28,11 +28,10 @@ public class WeatherAppController {
 	 */
 	@CrossOrigin(origins = "http://localhost:8080")
 	@RequestMapping(value = "/byCityAndCountry")
-	public WeatherPrediction listPredictionParNomDeVilleEtDePays(@RequestParam String city,
+	public WeatherPredictionOutput listPredictionParNomDeVilleEtDePays(@RequestParam String city,
 			@RequestParam String country) {
 
 		return business.getForecastByCityAndCountry(city, country);
-
 	}
 
 	/**
@@ -45,10 +44,9 @@ public class WeatherAppController {
 	 */
 	@CrossOrigin(origins = "http://localhost:8080")
 	@RequestMapping(value = "/byCoordinates")
-	public WeatherPrediction listPredictionParCoordonnees(@RequestParam String lat, @RequestParam String lng) {
+	public WeatherPredictionOutput listPredictionParCoordonnees(@RequestParam String lat, @RequestParam String lng) {
 
 		return business.getForecastByCoordinates(lat, lng);
-
 	}
 
 	@ExceptionHandler({ Exception.class })

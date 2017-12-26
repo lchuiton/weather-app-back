@@ -4,6 +4,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.client.RestTemplate;
 
+import com.weatherapp.helper.CoordinateHelper;
 import com.weatherapp.helper.TemperatureHelper;
 import com.weatherapp.helper.WeatherSubscriber;
 import com.weatherapp.ws.ApiWeatherWebService;
@@ -29,6 +30,11 @@ public class BusinessConfig {
 	@Bean
 	WeatherSubscriber weatherSubscriber() {
 		return new WeatherSubscriber();
+	}
+
+	@Bean
+	CoordinateHelper coordinateHelper() {
+		return new CoordinateHelper();
 	}
 
 }
