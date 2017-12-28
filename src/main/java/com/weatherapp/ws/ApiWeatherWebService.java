@@ -1,5 +1,6 @@
 package com.weatherapp.ws;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +21,20 @@ public class ApiWeatherWebService {
 	@Autowired
 	RestTemplate restTemplate;
 
-	public WeatherPrediction callApiWeather(Map<String, String> uriVariables) {
+	public WeatherPrediction getPredictionByCoordinate(String lat, String lng) {
+		Map<String, String> uriVariables = new HashMap<>();
+		uriVariables.put("lat", lat);
+		uriVariables.put("lon", lng);
+		return callApiWeather(uriVariables);
+	}
+
+	public WeatherPrediction getPredictionByCityAndCountry(String cityName, String country) {
+		Map<String, String> uriVariables = new HashMap<>();
+		uriVariables.put("q", cityName + "," + country);
+		return callApiWeather(uriVariables);
+	}
+
+	private WeatherPrediction callApiWeather(Map<String, String> uriVariables) {
 
 		HttpHeaders headers = new HttpHeaders();
 		headers.set("Accept", MediaType.APPLICATION_JSON_VALUE);

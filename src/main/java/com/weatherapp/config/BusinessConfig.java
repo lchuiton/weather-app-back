@@ -6,7 +6,6 @@ import org.springframework.web.client.RestTemplate;
 
 import com.weatherapp.helper.CoordinateHelper;
 import com.weatherapp.helper.TemperatureHelper;
-import com.weatherapp.helper.WeatherSubscriber;
 import com.weatherapp.ws.ApiWeatherWebService;
 
 @Configuration
@@ -25,11 +24,6 @@ public class BusinessConfig {
 	@Bean
 	ApiWeatherWebService apiWeatherWebService() {
 		return new ApiWeatherWebService();
-	}
-
-	@Bean
-	WeatherSubscriber weatherSubscriber() {
-		return new WeatherSubscriber();
 	}
 
 	@Bean
