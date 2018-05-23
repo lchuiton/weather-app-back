@@ -8,9 +8,12 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.context.request.async.DeferredResult;
 
 import com.weatherapp.business.WeatherAppBusiness;
-import com.weatherapp.model.output.WeatherPredictionOutput;
+import com.weatherapp.model.WeatherPrediction;
+
+import io.reactivex.Observable;
 
 @RestController
 public class WeatherAppController {
@@ -28,10 +31,14 @@ public class WeatherAppController {
 	 */
 	@CrossOrigin(origins = "http://localhost:8080")
 	@RequestMapping(value = "/byCityAndCountry")
-	public WeatherPredictionOutput listPredictionParNomDeVilleEtDePays(@RequestParam String city,
+	public DeferredResult<WeatherPrediction> listPredictionParNomDeVilleEtDePays(@RequestParam String city,
 			@RequestParam String country) {
 
-		return business.getForecastByCityAndCountry(city, country);
+		Observable<WeatherPrediction> observable = Observable.just(business.getForecastByCityAndCountry(city, country));
+		DeferredResult<WeatherPrediction> deffered = new DeferredResult<WeatherPrediction>();
+		observable.subscribe(m -> deffered.setResult(m), e -> deffered.setErrorResult(e));
+		return deffered;
+
 	}
 
 	/**
@@ -44,7 +51,7 @@ public class WeatherAppController {
 	 */
 	@CrossOrigin(origins = "http://localhost:8080")
 	@RequestMapping(value = "/byCoordinates")
-	public WeatherPredictionOutput listPredictionParCoordonnees(@RequestParam String lat, @RequestParam String lng) {
+	public WeatherPrediction listPredictionParCoordonnees(@RequestParam String lat, @RequestParam String lng) {
 
 		return business.getForecastByCoordinates(lat, lng);
 	}

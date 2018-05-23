@@ -5,9 +5,8 @@ import org.springframework.stereotype.Service;
 
 import com.weatherapp.helper.CoordinateHelper;
 import com.weatherapp.helper.TemperatureHelper;
-import com.weatherapp.helper.WeatherSubscriber;
 import com.weatherapp.model.WeatherPrediction;
-import com.weatherapp.model.output.WeatherPredictionOutput;
+import com.weatherapp.ws.ApiWeatherWebService;
 
 @Service
 public class WeatherAppBusiness {
@@ -16,35 +15,46 @@ public class WeatherAppBusiness {
 	private TemperatureHelper temperatureHelper;
 
 	@Autowired
-	private WeatherSubscriber weatherSubscriber;
+	private ApiWeatherWebService apiWeatherWebService;
 
 	@Autowired
 	private CoordinateHelper coordinateHelper;
 
-	public WeatherPredictionOutput getForecastByCityAndCountry(String city, String country) {
-
-		WeatherPrediction weatherPrediction = weatherSubscriber.getPredictionByCityAndCountry(city, country);
+	/**
+	 * Returns a Weather forecast for a location, based on city and country
+	 * names
+	 * 
+	 * @param city
+	 *            the city's name for this research
+	 * @param country
+	 *            the country the city is in
+	 * @return a {@link WeatherPredictionOutput} for this location
+	 */
+	public WeatherPrediction getForecastByCityAndCountry(String city, String country) {
+		WeatherPrediction weatherPrediction = apiWeatherWebService.getPredictionByCityAndCountry(city, country);
 
 		temperatureHelper.calcMinMax(weatherPrediction);
 
-		return buildWeatherPredictionOutput(weatherPrediction);
+		return weatherPrediction;
 
 	}
 
-	public WeatherPredictionOutput getForecastByCoordinates(String lat, String lng) {
-		// Appel de l'API distante pour recuperer les informations
-
-		WeatherPrediction weatherPrediction = weatherSubscriber.getPredictionByCoordinate(lat, lng);
+	/**
+	 * Returns a Weather forecast for a location, based on coordinates
+	 * 
+	 * @param lat
+	 *            the latitude of the location
+	 * @param lng
+	 *            the longitude of the location
+	 * @return a {@link WeatherPredictionOutput} for this location
+	 */
+	public WeatherPrediction getForecastByCoordinates(String lat, String lng) {
+		WeatherPrediction weatherPrediction = apiWeatherWebService.getPredictionByCoordinate(lat, lng);
 
 		coordinateHelper.formatCoordinate(weatherPrediction, lat, lng);
 		temperatureHelper.calcMinMax(weatherPrediction);
 
-		return buildWeatherPredictionOutput(weatherPrediction);
+		return weatherPrediction;
 	}
 
-	private WeatherPredictionOutput buildWeatherPredictionOutput(WeatherPrediction weatherPrediction) {
-		WeatherPredictionOutput output = WeatherPredictionOutput.builder().city(weatherPrediction.getCity())
-				.temperatureMinMax(weatherPrediction.getTemperatureMinMax()).list(weatherPrediction.getList()).build();
-		return output;
-	}
 }
