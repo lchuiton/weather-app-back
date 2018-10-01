@@ -1,6 +1,8 @@
 server:
   port: 9000
-
+management:
+  server:
+    port: 19000
 api:
   weather:
     uri: http://api.openweathermap.org/data/2.5/forecast?appid=38b0ef233cc7a4f47339572ec0f2851d

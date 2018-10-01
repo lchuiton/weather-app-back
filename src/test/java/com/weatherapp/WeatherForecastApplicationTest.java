@@ -1,5 +1,6 @@
 package com.weatherapp;
 
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
@@ -11,8 +12,9 @@ import org.springframework.test.context.web.WebAppConfiguration;
 @WebAppConfiguration
 public class WeatherForecastApplicationTest {
 
-	@Test
-	public void contextLoads() {
-	}
+  @Test
+  public void contextLoads() {
+    Assert.assertTrue(true);
+  }
 
 }
