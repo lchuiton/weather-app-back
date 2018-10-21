@@ -4,20 +4,23 @@ import com.weatherapp.helper.CoordinateHelper;
 import com.weatherapp.helper.TemperatureHelper;
 import com.weatherapp.model.WeatherPrediction;
 import com.weatherapp.ws.ApiWeatherWebService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class WeatherAppBusiness {
 
-  @Autowired
   private TemperatureHelper temperatureHelper;
 
-  @Autowired
   private ApiWeatherWebService apiWeatherWebService;
 
-  @Autowired
   private CoordinateHelper coordinateHelper;
+
+  public WeatherAppBusiness(TemperatureHelper temperatureHelper,
+      ApiWeatherWebService apiWeatherWebService, CoordinateHelper coordinateHelper) {
+    this.apiWeatherWebService = apiWeatherWebService;
+    this.temperatureHelper = temperatureHelper;
+    this.coordinateHelper = coordinateHelper;
+  }
 
   /**
    * Returns a Weather forecast for a location, based on city and country names
@@ -27,11 +30,12 @@ public class WeatherAppBusiness {
    * @return a {@link WeatherPrediction} for this location
    */
   public WeatherPrediction getForecastByCityAndCountry(String city, String country) {
-    WeatherPrediction weatherPrediction = apiWeatherWebService
-        .getPredictionByCityAndCountry(city, country);
+    WeatherPrediction weatherPrediction = apiWeatherWebService.getPredictionByCityAndCountry(city, country);
 
-    temperatureHelper.calcMinMax(weatherPrediction);
-
+    if (weatherPrediction != null) {
+      weatherPrediction.setTemperatureMinMax(temperatureHelper.calculateMinimumTemperature(weatherPrediction));
+      weatherPrediction.setTemperatureMax(temperatureHelper.calculateMaximumTemperature(weatherPrediction));
+    }
     return weatherPrediction;
 
   }
@@ -47,7 +51,9 @@ public class WeatherAppBusiness {
     WeatherPrediction weatherPrediction = apiWeatherWebService.getPredictionByCoordinate(lat, lng);
 
     coordinateHelper.formatCoordinate(weatherPrediction, lat, lng);
-    temperatureHelper.calcMinMax(weatherPrediction);
+
+    weatherPrediction.setTemperatureMinMax(temperatureHelper.calculateMinimumTemperature(weatherPrediction));
+    weatherPrediction.setTemperatureMax(temperatureHelper.calculateMaximumTemperature(weatherPrediction));
 
     return weatherPrediction;
   }

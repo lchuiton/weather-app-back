@@ -3,8 +3,10 @@ package com.weatherapp.helper;
 import com.weatherapp.model.WeatherPrediction;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
+import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
+@Component
 public class CoordinateHelper {
 
   public void formatCoordinate(WeatherPrediction weatherPrediction, String lat, String lng) {

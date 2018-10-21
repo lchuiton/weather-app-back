@@ -10,10 +10,11 @@ import static org.springframework.test.web.client.match.MockRestRequestMatchers.
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
 
 import com.weatherapp.helper.TemperatureHelper;
-import com.weatherapp.model.TempMinMax;
+import com.weatherapp.model.Temperature;
 import com.weatherapp.model.WeatherPrediction;
 import java.io.IOException;
 import java.nio.file.Paths;
+import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.test.web.client.ExpectedCount;
@@ -44,18 +45,25 @@ public class WeatherPredictionTest {
         .getForObject("/testWeatherApp/{id}", WeatherPrediction.class, 1);
 
     // Act
-    temperatureHelper.calcMinMax(weatherPrediction);
+    List<Temperature> resultMin = temperatureHelper.calculateMinimumTemperature(weatherPrediction);
+    List<Temperature> resultMax = temperatureHelper.calculateMaximumTemperature(weatherPrediction);
 
     // Assert
-    TempMinMax resultatCalcMinMaxFirstDay = weatherPrediction.getTemperatureMinMax()[0];
-    assertThat(resultatCalcMinMaxFirstDay.getDate(), equalTo("2017-03-10"));
-    assertThat(resultatCalcMinMaxFirstDay.getMaxTemp(), equalTo(Double.valueOf("279.489")));
-    assertThat(resultatCalcMinMaxFirstDay.getMinTemp(), equalTo(Double.valueOf("277.94")));
+    Temperature resultCalcMinMaxFirstDay = resultMin.get(0);
+    assertThat(resultCalcMinMaxFirstDay.getDate(), equalTo("2017-03-10"));
+    assertThat(resultCalcMinMaxFirstDay.getTemp(), equalTo(Double.valueOf("277.94")));
 
-    TempMinMax resultatCalcMinMaxSecondDay = weatherPrediction.getTemperatureMinMax()[1];
-    assertThat(resultatCalcMinMaxSecondDay.getDate(), equalTo("2017-03-11"));
-    assertThat(resultatCalcMinMaxSecondDay.getMaxTemp(), equalTo(Double.valueOf("287.998")));
-    assertThat(resultatCalcMinMaxSecondDay.getMinTemp(), equalTo(Double.valueOf("274.326")));
+    Temperature resultCalcMaxFirstDay = resultMax.get(0);
+    assertThat(resultCalcMaxFirstDay.getDate(), equalTo("2017-03-10"));
+    assertThat(resultCalcMaxFirstDay.getTemp(), equalTo(Double.valueOf("279.489")));
+
+    Temperature resultCalcMinMaxSecondDay = resultMin.get(1);
+    assertThat(resultCalcMinMaxSecondDay.getDate(), equalTo("2017-03-11"));
+    assertThat(resultCalcMinMaxSecondDay.getTemp(), equalTo(Double.valueOf("274.326")));
+
+    Temperature resultCalcMaxSecondDay = resultMax.get(1);
+    assertThat(resultCalcMaxSecondDay.getDate(), equalTo("2017-03-11"));
+    assertThat(resultCalcMaxSecondDay.getTemp(), equalTo(Double.valueOf("287.998")));
   }
 
   private String stringFromTestFile(Integer numeroDeTest) {

@@ -1,5 +1,7 @@
 package com.weatherapp.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,11 +11,12 @@ public class WeatherPrediction {
   private City city;
 
   @Setter
-  private TempMinMax[] temperatureMinMax;
+  private List<Temperature> temperatureMinMax;
+  @Setter
+  private List<Temperature> temperatureMax;
 
-  private List[] list;
+  @JsonProperty("list")
+  private List<ListOfValue> listOfValues;
 
-  public WeatherPrediction() {
-  }
 
 }

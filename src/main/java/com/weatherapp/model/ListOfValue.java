@@ -1,17 +1,18 @@
 package com.weatherapp.model;
 
+import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class List {
+public class ListOfValue {
 
   private Main main;
-  private Weather[] weather;
+  private List<Weather> weather;
   private long dt;
 
-  private List() {
+  private ListOfValue() {
 
   }
 }

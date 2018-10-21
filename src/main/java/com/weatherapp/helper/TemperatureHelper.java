@@ -1,76 +1,71 @@
 package com.weatherapp.helper;
 
-import com.weatherapp.model.List;
-import com.weatherapp.model.TempMinMax;
+import com.weatherapp.model.ListOfValue;
+import com.weatherapp.model.Temperature;
 import com.weatherapp.model.WeatherPrediction;
 import java.util.Calendar;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
+import java.util.Comparator;
+import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
+import java.util.stream.Collectors;
+import org.apache.commons.lang3.tuple.Pair;
 
 public class TemperatureHelper {
 
-  public void calcMinMax(WeatherPrediction weatherPrediction) {
+  public List<Temperature> calculateMaximumTemperature(WeatherPrediction weatherPrediction) {
+    List<ListOfValue> list = weatherPrediction.getListOfValues();
+
+    Map<String, Double> test = list.stream()
+        .map(a -> Pair.of(formatDateForDataFetching(a.getDt()), a.getMain().getTempMax()))
+        .collect(Collectors.toMap(Pair::getLeft, Pair::getRight,
+            (a, b) -> a < b ? b : a));
+
+    List<Temperature> result = test.entrySet().stream()
+        .map(a -> new Temperature(a.getKey(), a.getValue())).collect(
+            Collectors.toList());
+
+    result.sort(Comparator.comparing(Temperature::getDate));
+
+    return result;
+  }
+
+  public List<Temperature> calculateMinimumTemperature(WeatherPrediction weatherPrediction) {
+    List<ListOfValue> list = weatherPrediction.getListOfValues();
+
+    Map<String, Double> test = list.stream()
+        .map(a -> Pair.of(formatDateForDataFetching(a.getDt()), a.getMain().getTempMin()))
+        .collect(Collectors.toMap(Pair::getLeft, Pair::getRight,
+            (a, b) -> a > b ? b : a));
+
+    List<Temperature> result = test.entrySet().stream()
+        .map(a -> new Temperature(a.getKey(), a.getValue())).collect(
+            Collectors.toList());
+    result.sort(Comparator.comparing(Temperature::getDate));
+
+    return result;
+  }
+
+  private String formatDateForDataFetching(long date) {
     Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
-    Map<String, Double[]> map = new HashMap<>();
+    cal.setTimeInMillis(date * 1000);
+    StringBuilder dateDuJourBuilder = new StringBuilder();
 
-    List[] list = weatherPrediction.getList();
+    dateDuJourBuilder.append(cal.get(Calendar.YEAR)).append("-");
 
-    for (List listDeData : list) {
-      cal.setTimeInMillis(listDeData.getDt() * 1000);
-      StringBuilder dateDuJourBuilder = new StringBuilder();
+    int month = cal.get(Calendar.MONTH) + 1;
 
-      dateDuJourBuilder.append(cal.get(Calendar.YEAR) + "-");
-
-      int mois = cal.get(Calendar.MONTH) + 1;
-
-      if (mois + 1 < 10) {
-        dateDuJourBuilder.append(0);
-      }
-      dateDuJourBuilder.append(mois + "-");
-
-      int jour = cal.get(Calendar.DAY_OF_MONTH);
-
-      if (jour < 10) {
-        dateDuJourBuilder.append(0);
-      }
-      dateDuJourBuilder.append(jour);
-
-      Double tempMax = listDeData.getMain().getTempMax();
-      Double tempMin = listDeData.getMain().getTempMin();
-
-      String dateDuJour = dateDuJourBuilder.toString();
-      if (!map.containsKey(dateDuJour)) {
-        map.put(dateDuJour.toString(), new Double[]{tempMax, tempMin});
-      } else {
-        Double tempMaxInit = map.get(dateDuJour)[0];
-        Double tempMinInit = map.get(dateDuJour)[1];
-
-        if (tempMax > tempMaxInit) {
-          tempMaxInit = tempMax;
-        }
-        if (tempMin < tempMinInit) {
-          tempMinInit = tempMin;
-        }
-        map.put(dateDuJour, new Double[]{tempMaxInit, tempMinInit});
-      }
+    if (month + 1 < 10) {
+      dateDuJourBuilder.append(0);
     }
+    dateDuJourBuilder.append(month).append("-");
 
-    LinkedHashMap<String, Double[]> finalMap = new LinkedHashMap<>();
-    map.entrySet().stream().sorted(Map.Entry.comparingByKey())
-        .forEachOrdered(x -> finalMap.put(x.getKey(), x.getValue()));
+    int day = cal.get(Calendar.DAY_OF_MONTH);
 
-    int i = 0;
-
-    TempMinMax[] temperatureMinMax = new TempMinMax[map.size()];
-    for (Map.Entry<String, Double[]> entry : finalMap.entrySet()) {
-      temperatureMinMax[i] = new TempMinMax(entry.getKey(), entry.getValue()[0],
-          entry.getValue()[1]);
-      ++i;
+    if (day < 10) {
+      dateDuJourBuilder.append(0);
     }
-
-    weatherPrediction.setTemperatureMinMax(temperatureMinMax);
-
+    dateDuJourBuilder.append(day);
+    return dateDuJourBuilder.toString();
   }
 }

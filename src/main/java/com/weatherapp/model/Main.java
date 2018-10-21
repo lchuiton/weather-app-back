@@ -16,8 +16,4 @@ public class Main {
   private double pressure;
   private int humidity;
 
-  private Main() {
-
-  }
-
 }

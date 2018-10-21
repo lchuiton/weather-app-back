@@ -2,7 +2,6 @@ package com.weatherapp.ws;
 
 import com.weatherapp.config.BusinessConfigurationProperties;
 import com.weatherapp.model.WeatherPrediction;
-import java.net.URI;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -12,7 +11,6 @@ import org.springframework.boot.test.context.ConfigFileApplicationContextInitial
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -44,10 +42,8 @@ public class ApiWeatherWebServiceTest {
   @Test(expected = NullPointerException.class)
   public void test() {
     // Arrange
-    URI uri = null;
-    HttpEntity entity = null;
     ResponseEntity<WeatherPrediction> response = new ResponseEntity<>(HttpStatus.OK);
-    Mockito.when(restTemplate.exchange(uri, HttpMethod.GET, entity, WeatherPrediction.class))
+    Mockito.when(restTemplate.exchange(null, HttpMethod.GET, null, WeatherPrediction.class))
         .thenReturn(response);
 
     // Act

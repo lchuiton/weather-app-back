@@ -20,36 +20,33 @@ class WeatherAppController {
   WeatherAppBusiness business;
 
   /**
-   * Take a <b>city</b> and a <b>country</b> as parameters and will call the weatherPrediction API
-   * to get forecast on the five next days.
+   * Take a <b>city</b> and a <b>country</b> as parameters and will call the weatherPrediction API to get forecast on the five next days.
    *
    * @return WeatherPrediction
    */
   @CrossOrigin(origins = "http://localhost:8080")
   @RequestMapping(value = "/byCityAndCountry")
-  public DeferredResult<WeatherPrediction> listPredictionParNomDeVilleEtDePays(
+  public DeferredResult<WeatherPrediction> getPredictionByLocation(
       @RequestParam String city,
       @RequestParam String country) {
 
     Observable<WeatherPrediction> observable = Observable
         .just(business.getForecastByCityAndCountry(city, country));
-    DeferredResult<WeatherPrediction> deffered = new DeferredResult<WeatherPrediction>();
-    observable.subscribe(m -> deffered.setResult(m), e -> deffered.setErrorResult(e));
+    DeferredResult<WeatherPrediction> deffered = new DeferredResult<>();
+    observable.subscribe(deffered::setResult, deffered::setErrorResult);
     return deffered;
 
   }
 
   /**
-   * Take a <b>lat</b> and a <b>lng</b> as parameters and will call the weatherPrediction API to get
-   * forecast on the five next days.
+   * Take a <b>lat</b> and a <b>lng</b> as parameters and will call the weatherPrediction API to get forecast on the five next days.
    *
    * @return WeatherPrediction
    */
   @CrossOrigin(origins = "http://localhost:8080")
   @RequestMapping(value = "/byCoordinates")
-  public WeatherPrediction listPredictionParCoordonnees(@RequestParam String lat,
+  public WeatherPrediction getPredictionByCoordinate(@RequestParam String lat,
       @RequestParam String lng) {
-
     return business.getForecastByCoordinates(lat, lng);
   }
 
