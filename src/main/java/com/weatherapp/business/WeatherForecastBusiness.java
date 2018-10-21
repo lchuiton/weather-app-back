@@ -7,7 +7,7 @@ import com.weatherapp.ws.ApiWeatherWebService;
 import org.springframework.stereotype.Service;
 
 @Service
-public class WeatherAppBusiness {
+public class WeatherForecastBusiness {
 
   private TemperatureHelper temperatureHelper;
 
@@ -15,8 +15,7 @@ public class WeatherAppBusiness {
 
   private CoordinateHelper coordinateHelper;
 
-  public WeatherAppBusiness(TemperatureHelper temperatureHelper,
-      ApiWeatherWebService apiWeatherWebService, CoordinateHelper coordinateHelper) {
+  public WeatherForecastBusiness(TemperatureHelper temperatureHelper, CoordinateHelper coordinateHelper, ApiWeatherWebService apiWeatherWebService) {
     this.apiWeatherWebService = apiWeatherWebService;
     this.temperatureHelper = temperatureHelper;
     this.coordinateHelper = coordinateHelper;
@@ -36,6 +35,7 @@ public class WeatherAppBusiness {
       weatherPrediction.setTemperatureMinMax(temperatureHelper.calculateMinimumTemperature(weatherPrediction));
       weatherPrediction.setTemperatureMax(temperatureHelper.calculateMaximumTemperature(weatherPrediction));
     }
+
     return weatherPrediction;
 
   }

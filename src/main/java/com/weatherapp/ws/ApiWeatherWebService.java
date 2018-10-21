@@ -15,8 +15,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 public class ApiWeatherWebService {
 
   @Autowired
-  private
-  RestTemplate restTemplate;
+  private RestTemplate restTemplate;
   @Value("${api.weather.uri}")
   private String apiWeatherUri;
 

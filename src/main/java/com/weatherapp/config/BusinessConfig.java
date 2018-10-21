@@ -11,13 +11,13 @@ import org.springframework.web.client.RestTemplate;
 class BusinessConfig {
 
   @Bean
-  RestTemplate restTemplate() {
-    return new RestTemplate();
+  TemperatureHelper temperatureHelper() {
+    return new TemperatureHelper();
   }
 
   @Bean
-  TemperatureHelper temperatureHelper() {
-    return new TemperatureHelper();
+  CoordinateHelper coordinateHelper() {
+    return new CoordinateHelper();
   }
 
   @Bean
@@ -26,8 +26,9 @@ class BusinessConfig {
   }
 
   @Bean
-  CoordinateHelper coordinateHelper() {
-    return new CoordinateHelper();
+  RestTemplate restTemplate() {
+    return new RestTemplate();
   }
+
 
 }
