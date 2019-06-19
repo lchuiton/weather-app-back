@@ -2,6 +2,8 @@ package com.weatherapp.controller;
 
 import com.weatherapp.business.WeatherAppService;
 import com.weatherapp.model.WeatherPrediction;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
@@ -10,6 +12,8 @@ import javax.servlet.http.HttpServletRequest;
 
 @RestController
 public class WeatherAppController {
+
+  private Logger logger = LoggerFactory.getLogger(this.getClass().toString());
 
   private WeatherAppService business;
 
@@ -28,14 +32,9 @@ public class WeatherAppController {
    */
   @CrossOrigin(origins = "http://localhost:8080")
   @RequestMapping(value = "/byCityAndCountry")
-  public Mono<WeatherPrediction> listPredictionParNomDeVilleEtDePays(
+  public Mono<WeatherPrediction> weatherPredictionByCityAndCountry(
       @RequestParam String city, @RequestParam String country) {
-    //		Mono<WeatherPrediction> observable =
     return Mono.just(business.getForecastByCityAndCountry(city, country));
-    //		DeferredResult<WeatherPrediction> deffered = new DeferredResult<WeatherPrediction>();
-    //		observable.subscribe(m -> deffered.setResult(m), e -> deffered.setErrorResult(e));
-    //		return deffered;
-
   }
 
   /**
@@ -48,14 +47,15 @@ public class WeatherAppController {
    */
   @CrossOrigin(origins = "http://localhost:8080")
   @RequestMapping(value = "/byCoordinates")
-  public WeatherPrediction listPredictionParCoordonnees(
+  public Mono<WeatherPrediction> weatherPredictionByCoordinates(
       @RequestParam String lat, @RequestParam String lng) {
 
-    return business.getForecastByCoordinates(lat, lng);
+    return Mono.just(business.getForecastByCoordinates(lat, lng));
   }
 
   @ExceptionHandler({Exception.class})
   public String exceptionHandler(HttpServletRequest req, Exception ex) {
+    logger.error("Error for request {}", req.getRequestURI());
     return ex.getMessage();
   }
 }

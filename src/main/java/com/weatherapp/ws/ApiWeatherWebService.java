@@ -7,14 +7,22 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
+import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.HashMap;
 import java.util.Map;
 
+@Service
 public class ApiWeatherWebService {
-  @Autowired RestTemplate restTemplate;
+
+  private RestTemplate restTemplate;
+
+  @Autowired
+  public ApiWeatherWebService(RestTemplate restTemplate) {
+    this.restTemplate = restTemplate;
+  }
 
   @Value("${api.weather.uri}")
   private String apiWeatherUri;

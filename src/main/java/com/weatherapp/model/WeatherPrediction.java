@@ -4,13 +4,10 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Getter
+@Setter
 public class WeatherPrediction {
 
   private City city;
-
-  @Setter private TempMinMax[] temperatureMinMax;
-
+  private TempMinMax[] temperatureMinMax;
   private List[] list;
-
-  public WeatherPrediction() {}
 }

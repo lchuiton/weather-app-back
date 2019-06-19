@@ -6,6 +6,7 @@ import com.weatherapp.model.WeatherPrediction;
 import org.hamcrest.MatcherAssert;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
 import org.springframework.test.web.client.ExpectedCount;
 import org.springframework.test.web.client.MockRestServiceServer;
 import org.springframework.web.client.RestTemplate;
@@ -38,6 +39,7 @@ public class WeatherPredictionTest {
 
   @Test
   public void testMinTempCalculation() {
+    // Arrange
     server
         .expect(ExpectedCount.once(), requestTo("/testWeatherApp/1"))
         .andExpect(method(GET))
@@ -46,30 +48,36 @@ public class WeatherPredictionTest {
     weatherPrediction =
         restTemplate.getForObject("/testWeatherApp/{id}", WeatherPrediction.class, 1);
 
+    // Act
+    if (weatherPrediction == null) {
+      Assertions.fail("WeatherPrediction cannot be null, check the test cases");
+    }
     temperatureHelper.calcMinMax(weatherPrediction);
-    TempMinMax resultatCalcMinMaxFirstDay = weatherPrediction.getTemperatureMinMax()[0];
-    MatcherAssert.assertThat(resultatCalcMinMaxFirstDay.getDate(), equalTo("2017-03-10"));
-    MatcherAssert.assertThat(
-        resultatCalcMinMaxFirstDay.getMaxTemp(), equalTo(Double.valueOf("279.489")));
-    MatcherAssert.assertThat(
-        resultatCalcMinMaxFirstDay.getMinTemp(), equalTo(Double.valueOf("277.94")));
+    TempMinMax resultCalcMinMaxFirstDay = weatherPrediction.getTemperatureMinMax()[0];
 
-    TempMinMax resultatCalcMinMaxSecondDay = weatherPrediction.getTemperatureMinMax()[1];
-    MatcherAssert.assertThat(resultatCalcMinMaxSecondDay.getDate(), equalTo("2017-03-11"));
+    // Assert
+    MatcherAssert.assertThat(resultCalcMinMaxFirstDay.getDate(), equalTo("2017-03-10"));
     MatcherAssert.assertThat(
-        resultatCalcMinMaxSecondDay.getMaxTemp(), equalTo(Double.valueOf("287.998")));
+        resultCalcMinMaxFirstDay.getMaxTemp(), equalTo(Double.valueOf("279.489")));
     MatcherAssert.assertThat(
-        resultatCalcMinMaxSecondDay.getMinTemp(), equalTo(Double.valueOf("274.326")));
+        resultCalcMinMaxFirstDay.getMinTemp(), equalTo(Double.valueOf("277.94")));
+
+    TempMinMax resultCalcMinMaxSecondDay = weatherPrediction.getTemperatureMinMax()[1];
+    MatcherAssert.assertThat(resultCalcMinMaxSecondDay.getDate(), equalTo("2017-03-11"));
+    MatcherAssert.assertThat(
+        resultCalcMinMaxSecondDay.getMaxTemp(), equalTo(Double.valueOf("287.998")));
+    MatcherAssert.assertThat(
+        resultCalcMinMaxSecondDay.getMinTemp(), equalTo(Double.valueOf("274.326")));
   }
 
-  private String stringFromTestFile(Integer numeroDeTest) {
+  private String stringFromTestFile(Integer testNumber) {
 
     String content = "";
     try {
       content =
           new String(
               readAllBytes(
-                  Paths.get("src/test/resources/weatherprediction/data_" + numeroDeTest + ".txt")));
+                  Paths.get("src/test/resources/weatherprediction/data_" + testNumber + ".txt")));
     } catch (IOException e) {
       e.printStackTrace();
     }
