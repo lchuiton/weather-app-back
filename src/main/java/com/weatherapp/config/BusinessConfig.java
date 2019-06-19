@@ -10,24 +10,23 @@ import org.springframework.web.client.RestTemplate;
 @Configuration
 public class BusinessConfig {
 
-    @Bean
-    RestTemplate restTemplate() {
-        return new RestTemplate();
-    }
+  @Bean
+  RestTemplate restTemplate() {
+    return new RestTemplate();
+  }
 
-    @Bean
-    TemperatureHelper temperatureHelper() {
-        return new TemperatureHelper();
-    }
+  @Bean
+  TemperatureHelper temperatureHelper() {
+    return new TemperatureHelper();
+  }
 
-    @Bean
-    ApiWeatherWebService apiWeatherWebService() {
-        return new ApiWeatherWebService();
-    }
+  @Bean
+  ApiWeatherWebService apiWeatherWebService() {
+    return new ApiWeatherWebService();
+  }
 
-    @Bean
-    CoordinateHelper coordinateHelper() {
-        return new CoordinateHelper();
-    }
-
+  @Bean
+  CoordinateHelper coordinateHelper() {
+    return new CoordinateHelper();
+  }
 }

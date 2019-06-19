@@ -10,6 +10,10 @@ import org.springframework.stereotype.Service;
 @Service
 public class WeatherAppService {
 
+  private TemperatureHelper temperatureHelper;
+  private ApiWeatherWebService apiWeatherWebService;
+  private CoordinateHelper coordinateHelper;
+
   @Autowired
   public WeatherAppService(
       CoordinateHelper coordinateHelper,
@@ -19,10 +23,6 @@ public class WeatherAppService {
     this.temperatureHelper = temperatureHelper;
     this.apiWeatherWebService = apiWeatherWebService;
   }
-
-  private TemperatureHelper temperatureHelper;
-  private ApiWeatherWebService apiWeatherWebService;
-  private CoordinateHelper coordinateHelper;
 
   /**
    * Returns a Weather forecast for a location, based on city and country names

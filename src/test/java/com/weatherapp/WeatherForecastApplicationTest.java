@@ -11,8 +11,6 @@ import org.springframework.test.context.web.WebAppConfiguration;
 @WebAppConfiguration
 public class WeatherForecastApplicationTest {
 
-    @Test
-    public void contextLoads() {
-    }
-
+  @Test
+  public void contextLoads() {}
 }
