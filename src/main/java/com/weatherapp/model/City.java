@@ -7,11 +7,9 @@ import lombok.Setter;
 @Setter
 public class City {
 
-	private String name;
-	private String country;
-	private Coord coord;
+  private String name;
+  private String country;
+  private Coord coord;
 
-	private City() {
-
-	}
+  private City() {}
 }

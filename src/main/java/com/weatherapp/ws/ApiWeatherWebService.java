@@ -1,56 +1,60 @@
 package com.weatherapp.ws;
 
-import java.util.HashMap;
-import java.util.Map;
-
+import com.weatherapp.model.WeatherPrediction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
+import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import com.weatherapp.model.WeatherPrediction;
+import java.util.HashMap;
+import java.util.Map;
 
+@Service
 public class ApiWeatherWebService {
-	@Value("${api.weather.uri}")
-	private String apiWeatherUri;
 
-	@Autowired
-	RestTemplate restTemplate;
+  private RestTemplate restTemplate;
 
-	public WeatherPrediction getPredictionByCoordinate(String lat, String lng) {
-		Map<String, String> uriVariables = new HashMap<>();
-		uriVariables.put("lat", lat);
-		uriVariables.put("lon", lng);
-		return callApiWeather(uriVariables);
-	}
+  @Autowired
+  public ApiWeatherWebService(RestTemplate restTemplate) {
+    this.restTemplate = restTemplate;
+  }
 
-	public WeatherPrediction getPredictionByCityAndCountry(String cityName, String country) {
-		Map<String, String> uriVariables = new HashMap<>();
-		uriVariables.put("q", cityName + "," + country);
-		return callApiWeather(uriVariables);
-	}
+  @Value("${api.weather.uri}")
+  private String apiWeatherUri;
 
-	private WeatherPrediction callApiWeather(Map<String, String> uriVariables) {
+  public WeatherPrediction getPredictionByCoordinate(String lat, String lng) {
+    Map<String, String> uriVariables = new HashMap<>();
+    uriVariables.put("lat", lat);
+    uriVariables.put("lon", lng);
+    return callApiWeather(uriVariables);
+  }
 
-		HttpHeaders headers = new HttpHeaders();
-		headers.set("Accept", MediaType.APPLICATION_JSON_VALUE);
+  public WeatherPrediction getPredictionByCityAndCountry(String cityName, String country) {
+    Map<String, String> uriVariables = new HashMap<>();
+    uriVariables.put("q", cityName + "," + country);
+    return callApiWeather(uriVariables);
+  }
 
-		UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(apiWeatherUri);
+  private WeatherPrediction callApiWeather(Map<String, String> uriVariables) {
 
-		for (String variableKey : uriVariables.keySet()) {
-			builder.queryParam(variableKey, uriVariables.get(variableKey));
-		}
+    HttpHeaders headers = new HttpHeaders();
+    headers.set("Accept", MediaType.APPLICATION_JSON_VALUE);
 
-		HttpEntity<?> entity = new HttpEntity<>(headers);
+    UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(apiWeatherUri);
 
-		HttpEntity<WeatherPrediction> response = restTemplate.exchange(builder.build().encode().toUri(), HttpMethod.GET,
-				entity, WeatherPrediction.class);
+    uriVariables.forEach(builder::queryParam);
 
-		return response.getBody();
-	}
+    HttpEntity<?> entity = new HttpEntity<>(headers);
 
+    HttpEntity<WeatherPrediction> response =
+        restTemplate.exchange(
+            builder.build().encode().toUri(), HttpMethod.GET, entity, WeatherPrediction.class);
+
+    return response.getBody();
+  }
 }

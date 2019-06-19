@@ -7,11 +7,9 @@ import lombok.Setter;
 @Setter
 public class List {
 
-	private Main main;
-	private Weather[] weather;
-	private long dt;
+  private Main main;
+  private Weather[] weather;
+  private long dt;
 
-	private List() {
-
-	}
+  private List() {}
 }
