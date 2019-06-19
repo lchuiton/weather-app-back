@@ -7,12 +7,12 @@ import lombok.Setter;
 @Setter
 public class Weather {
 
-	private int id;
-	private String main;
-	private String description;
+    private int id;
+    private String main;
+    private String description;
 
-	private Weather() {
+    private Weather() {
 
-	}
+    }
 
 }
